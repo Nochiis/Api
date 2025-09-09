@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 
 # TODO: CREAR UNA INSTANCIA DE LA APLICACIÓN FLASK
 app = Flask(__name__)
@@ -29,8 +29,20 @@ def obtener_usuario(id_usuario):
     else:
         return jsonify({'mensaje':'Usuario no encontrado'}),404
     
+#TODO: BUSCAR UN USUARIO POR NOMBRE
+@app.route('/buscar')
+def buscar_usuario():
+    #TODO: ASIGNAMOS UN ARGUMENTO A NOMBRE PARA BUSCARLO POR LA URL
+    nombre = request.args.get('nombre')
+    usuarios_encontrado = [user for user in usuarios if nombre.lower() in user['nombre'].lower()]
 
-
+    #TODO: VALIDAMOS SI ENCUENTRA EL USUARIO POR NOMBRE
+    if usuarios_encontrado:
+        return jsonify({'usuarios': usuarios_encontrado})
+    else:
+        return jsonify({'mensaje':'Usuario no encontrado'}),404
+    
+   
 # TODO: INICIAR LA APLICACIÓN SI ESTE SCRIPT ES EJECUTADO DIRECTAMENTE
 if __name__ == "__main__":
     # TODO: CONFIGURACIÓN PARA EJECUTAR LA APLICACIÓN EN MODO DEPURACIÓN
